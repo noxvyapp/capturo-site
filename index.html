@@ -940,8 +940,19 @@ async function capturarLeadCompleto(prefixo) {
     const res = await fetch(SUPA_URL + '/rest/v1/waitlist', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ nome, email, whatsapp: wa.replace(/\D/g,''), source: 'landing_' + prefixo, created_at: new Date().toISOString() })
-    });
+      body: JSON.stringify({ 
+  nome, 
+  email, 
+  whatsapp: wa.replace(/\D/g,''),
+
+  status: "novo",
+  tipo: "lead",
+  interesse: "capturo",
+  origem_detalhada: prefixo,
+
+  source: 'landing_' + prefixo, 
+  created_at: new Date().toISOString() 
+})
     if (res.ok || res.status === 409) {
       ['Nome','Email','Wa'].forEach(f => { const el = document.getElementById(prefixo + f); if (el) el.value = ''; });
       btn.textContent = '✓ Inscrito!';
